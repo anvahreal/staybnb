@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { Listing } from "@/types/listing";
-import { cn } from "@/lib/utils";
+import { cn, formatNaira } from "@/lib/utils";
 
 interface ListingCardProps {
   listing: Listing;
@@ -124,7 +124,7 @@ export function ListingCard({ listing, className }: ListingCardProps) {
           {listing.bedrooms} bedroom{listing.bedrooms > 1 ? "s" : ""} · {listing.beds} bed{listing.beds > 1 ? "s" : ""}
         </p>
         <p className="pt-1">
-          <span className="font-semibold">${listing.price_per_night}</span>
+          <span className="font-semibold">{formatNaira(listing.price_per_night)}</span>
           <span className="text-muted-foreground"> night</span>
         </p>
       </div>

@@ -9,13 +9,13 @@ export function Footer() {
       { label: "Help Center", href: "#" },
       { label: "Safety information", href: "#" },
       { label: "Cancellation options", href: "#" },
-      { label: "Our COVID-19 Response", href: "#" },
+      { label: "Customer Support", href: "#" },
     ],
     community: [
-      { label: "Combating discrimination", href: "#" },
       { label: "Accessibility", href: "#" },
       { label: "Referrals", href: "#" },
       { label: "Gift cards", href: "#" },
+      { label: "Blog", href: "#" },
     ],
     hosting: [
       { label: "Host your home", href: "/host" },
@@ -24,10 +24,10 @@ export function Footer() {
       { label: "Resource Center", href: "#" },
     ],
     about: [
+      { label: "About Us", href: "#" },
       { label: "Newsroom", href: "#" },
-      { label: "Learn about new features", href: "#" },
       { label: "Careers", href: "#" },
-      { label: "Investors", href: "#" },
+      { label: "Contact", href: "#" },
     ],
   };
 
@@ -81,7 +81,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="mb-4 font-semibold text-foreground">Staybnb</h3>
+            <h3 className="mb-4 font-semibold text-foreground">Digital Ridr</h3>
             <ul className="space-y-3">
               {footerLinks.about.map((link) => (
                 <li key={link.label}>
@@ -99,7 +99,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
-            <span>© {currentYear} Staybnb, Inc.</span>
+            <span>© {currentYear} Digital Ridr, Inc.</span>
             <span>·</span>
             <Link to="#" className="hover:text-foreground transition-colors">
               Privacy
@@ -117,7 +117,7 @@ export function Footer() {
           <div className="flex items-center gap-6">
             <button className="flex items-center gap-2 text-sm font-medium text-foreground hover:underline">
               <Globe className="h-4 w-4" />
-              English (US)
+              English (NG)
             </button>
             <div className="flex items-center gap-4">
               <a href="#" className="text-foreground hover:text-primary transition-colors">

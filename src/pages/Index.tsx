@@ -20,10 +20,10 @@ const Index = () => {
             <div className="mb-8 flex items-end justify-between">
               <div>
                 <h2 className="text-2xl font-bold text-foreground md:text-3xl">
-                  Featured stays
+                  Explore Lagos neighborhoods
                 </h2>
                 <p className="mt-2 text-muted-foreground">
-                  Handpicked properties loved by guests
+                  Popular areas across Lagos Mainland and Island
                 </p>
               </div>
               <Link to="/search">

@@ -26,7 +26,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
-import { cn } from "@/lib/utils";
+import { cn, formatNaira } from "@/lib/utils";
 import { toast } from "sonner";
 
 const amenityIcons: Record<string, any> = {
@@ -276,7 +276,7 @@ const ListingDetail = () => {
               <div className="rounded-xl border border-border bg-card p-6 shadow-card">
                 <div className="mb-6 flex items-baseline justify-between">
                   <div>
-                    <span className="text-2xl font-bold">${listing.price_per_night}</span>
+                    <span className="text-2xl font-bold">{formatNaira(listing.price_per_night)}</span>
                     <span className="text-muted-foreground"> night</span>
                   </div>
                   <div className="flex items-center gap-1 text-sm">
@@ -370,17 +370,17 @@ const ListingDetail = () => {
                   <div className="mt-4 space-y-3 border-t border-border pt-4">
                     <div className="flex justify-between text-sm">
                       <span className="underline">
-                        ${listing.price_per_night} × {nights} nights
+                        {formatNaira(listing.price_per_night)} × {nights} nights
                       </span>
-                      <span>${subtotal}</span>
+                      <span>{formatNaira(subtotal)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="underline">Service fee</span>
-                      <span>${serviceFee}</span>
+                      <span>{formatNaira(serviceFee)}</span>
                     </div>
                     <div className="flex justify-between border-t border-border pt-3 font-semibold">
                       <span>Total</span>
-                      <span>${total}</span>
+                      <span>{formatNaira(total)}</span>
                     </div>
                   </div>
                 )}
