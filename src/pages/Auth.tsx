@@ -49,10 +49,12 @@ const Auth = () => {
           {/* Logo */}
           <div className="mb-8 text-center">
             <Link to="/" className="inline-flex items-center gap-2">
-              <svg viewBox="0 0 32 32" className="h-10 w-10 text-primary" fill="currentColor">
-                <path d="M16 1c2.008 0 3.463.963 4.751 3.269l.533 1.025c1.954 3.83 6.114 12.54 7.1 14.836l.145.353c.667 1.591.91 2.472.96 3.396l.01.415.001.228c0 4.062-2.877 6.478-6.357 6.478-2.224 0-4.556-1.258-6.709-3.386l-.257-.26-.172-.179h-.212l-.257.26c-2.153 2.128-4.485 3.386-6.709 3.386C5.377 31 2.5 28.584 2.5 24.522l.005-.469c.026-.928.23-1.768.83-3.244l.216-.524c.996-2.298 5.146-10.992 7.098-14.819l.533-1.025C12.537 1.963 13.992 1 16 1z" />
-              </svg>
-              <span className="text-2xl font-bold text-primary">staybnb</span>
+              <img 
+            src="assets/digital-ridr-logo.png" 
+            alt="Digital Ridr - Travels & Apartments" 
+            className="h-20 md:h-12 w-auto"
+          />
+              {/*<span className="text-2xl font-bold text-primary">DigitalRidr</span>*/}
             </Link>
           </div>
 
@@ -63,7 +65,7 @@ const Auth = () => {
             </h1>
             <p className="mb-6 text-center text-muted-foreground">
               {isLogin
-                ? "Log in to continue to Staybnb"
+                ? "Log in to continue to  Digital Ridr"
                 : "Sign up to start your adventure"}
             </p>
 
