@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +8,7 @@ import { Mail, Lock, User, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
 const Auth = () => {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,10 +27,21 @@ const Auth = () => {
 
     toast.success(isLogin ? "Welcome back!" : "Account created successfully!");
     setIsLoading(false);
+    
+    // Navigate to home page after successful login/signup
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
 
   const handleSocialLogin = (provider: string) => {
-    toast.info(`${provider} login coming soon with Lovable Cloud!`);
+    toast.info(`${provider} login will be available soon!`);
+    // In production, this would handle OAuth flow
+    // For now, simulate successful login
+    setTimeout(() => {
+      toast.success(`Logged in with ${provider}!`);
+      navigate("/");
+    }, 2000);
   };
 
   return (
@@ -50,11 +62,10 @@ const Auth = () => {
           <div className="mb-8 text-center">
             <Link to="/" className="inline-flex items-center gap-2">
               <img 
-            src="assets/digital-ridr-logo.png" 
-            alt="Digital Ridr - Travels & Apartments" 
-            className="h-20 md:h-12 w-auto"
-          />
-              {/*<span className="text-2xl font-bold text-primary">DigitalRidr</span>*/}
+                src="/assets/digital-ridr-logo.png" 
+                alt="Digital Ridr - Travels & Apartments" 
+                className="h-16 md:h-20 w-auto"
+              />
             </Link>
           </div>
 
@@ -65,8 +76,8 @@ const Auth = () => {
             </h1>
             <p className="mb-6 text-center text-muted-foreground">
               {isLogin
-                ? "Log in to continue to  Digital Ridr"
-                : "Sign up to start your adventure"}
+                ? "Log in to continue to Digital Ridr"
+                : "Sign up to start your adventure in Lagos"}
             </p>
 
             {/* Social Buttons */}
@@ -75,6 +86,7 @@ const Auth = () => {
                 variant="outline"
                 className="w-full gap-3"
                 onClick={() => handleSocialLogin("Google")}
+                type="button"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24">
                   <path
@@ -100,6 +112,7 @@ const Auth = () => {
                 variant="outline"
                 className="w-full gap-3"
                 onClick={() => handleSocialLogin("Apple")}
+                type="button"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
@@ -211,6 +224,7 @@ const Auth = () => {
               <button
                 onClick={() => setIsLogin(!isLogin)}
                 className="font-medium text-primary hover:underline"
+                type="button"
               >
                 {isLogin ? "Sign up" : "Log in"}
               </button>
