@@ -9,6 +9,10 @@ import ListingDetail from "./pages/ListingDetail";
 import Auth from "./pages/Auth";
 import Host from "./pages/Host";
 import NotFound from "./pages/NotFound";
+import UserDashboard from "./pages/userDashboard";
+import HostDashboard from "./pages/HostDashboard";
+import CreateListing from "./pages/CreateListing";
+import Checkout from "./pages/Checkout";
 
 const queryClient = new QueryClient();
 
@@ -21,9 +25,13 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/dashboard" element={<UserDashboard/>} />
           <Route path="/listing/:id" element={<ListingDetail />} />
+          <Route path="/host/create-listing" element={<CreateListing />} />
+          <Route path="/host/dashboard" element={<HostDashboard />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/host" element={<Host />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -42,6 +42,7 @@ const amenityIcons: Record<string, any> = {
 
 const ListingDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const listing = mockListings.find((l) => l.id === id);
 
   const [checkIn, setCheckIn] = useState<Date>();
@@ -75,7 +76,18 @@ const ListingDetail = () => {
       toast.error("Please select check-in and check-out dates");
       return;
     }
+
+    //Navigate
+    const params = new URLSearchParams({
+      listing: listing.id,
+      checkIn: checkIn.toISOString(),
+      checkOut: checkOut.toISOString(),
+      guests: guests.toString(),
+    });
+    
     toast.success("Reservation request sent! Redirecting to checkout...");
+
+    navigate(`/checkout?${params.toString()}`);
   };
 
   return (
