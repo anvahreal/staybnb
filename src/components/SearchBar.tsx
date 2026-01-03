@@ -36,14 +36,14 @@ export function SearchBar({ variant = "hero", className }: SearchBarProps) {
     <div
       className={cn(
         "w-full",
-        isHero ? "max-w-4xl" : "max-w-3xl",
+        isHero ? "max-w-4xl px-2 sm:px-4" : "max-w-3xl",
         className
       )}
     >
       <div
         className={cn(
-          "flex items-center rounded-full border border-border bg-background shadow-card transition-shadow hover:shadow-card-hover",
-          isHero ? "p-2" : "p-1"
+          "flex flex-col sm:flex-row items-stretch sm:items-center rounded-2xl sm:rounded-full border border-border bg-background shadow-card transition-shadow hover:shadow-card-hover overflow-hidden",
+          isHero ? "p-1 sm:p-2" : "p-1"
         )}
       >
         {/* Location */}
@@ -51,7 +51,7 @@ export function SearchBar({ variant = "hero", className }: SearchBarProps) {
           <PopoverTrigger asChild>
             <button
               className={cn(
-                "flex flex-1 flex-col rounded-full px-6 py-3 text-left transition-colors hover:bg-secondary",
+                "flex flex-col rounded-xl sm:rounded-full px-4 py-3 text-left transition-colors hover:bg-secondary w-full sm:flex-1",
                 activeTab === "location" && "bg-secondary"
               )}
             >
@@ -65,10 +65,10 @@ export function SearchBar({ variant = "hero", className }: SearchBarProps) {
               />
             </button>
           </PopoverTrigger>
-          <PopoverContent className="w-80 p-4" align="start">
+          <PopoverContent className="w-80" align="start">
             <div className="space-y-3">
               <h4 className="font-semibold">Popular destinations</h4>
-              {["New York", "Malibu", "Aspen", "Tulum", "Lake Tahoe"].map((place) => (
+              {["Lekki", "Victoria Island", "Ikoyi", "Ikeja", "Yaba"].map((place) => (
                 <button
                   key={place}
                   onClick={() => {
@@ -87,18 +87,18 @@ export function SearchBar({ variant = "hero", className }: SearchBarProps) {
           </PopoverContent>
         </Popover>
 
-        <div className="h-8 w-px bg-border" />
+        <div className="hidden sm:block h-8 w-px bg-border" />
 
         {/* Check In */}
         <Popover open={activeTab === "checkIn"} onOpenChange={(open) => setActiveTab(open ? "checkIn" : null)}>
           <PopoverTrigger asChild>
             <button
               className={cn(
-                "flex flex-col rounded-full px-6 py-3 text-left transition-colors hover:bg-secondary",
+                "flex flex-col rounded-xl sm:rounded-full px-4 py-3 text-left transition-colors hover:bg-secondary w-full sm:w-auto",
                 activeTab === "checkIn" && "bg-secondary"
               )}
             >
-              <span className="text-xs font-semibold">Check in</span>
+              <span className="text-xs font-semibold uppercase">Check in</span>
               <span className={cn("text-sm", checkIn ? "text-foreground" : "text-muted-foreground")}>
                 {checkIn ? format(checkIn, "MMM d") : "Add dates"}
               </span>
@@ -117,18 +117,18 @@ export function SearchBar({ variant = "hero", className }: SearchBarProps) {
           </PopoverContent>
         </Popover>
 
-        <div className="h-8 w-px bg-border" />
+        <div className="hidden sm:block h-8 w-px bg-border" />
 
         {/* Check Out */}
         <Popover open={activeTab === "checkOut"} onOpenChange={(open) => setActiveTab(open ? "checkOut" : null)}>
           <PopoverTrigger asChild>
             <button
               className={cn(
-                "flex flex-col rounded-full px-6 py-3 text-left transition-colors hover:bg-secondary",
+                "flex flex-col rounded-xl sm:rounded-full px-4 py-3 text-left transition-colors hover:bg-secondary w-full sm:w-auto",
                 activeTab === "checkOut" && "bg-secondary"
               )}
             >
-              <span className="text-xs font-semibold">Check out</span>
+              <span className="text-xs font-semibold uppercase">Check out</span>
               <span className={cn("text-sm", checkOut ? "text-foreground" : "text-muted-foreground")}>
                 {checkOut ? format(checkOut, "MMM d") : "Add dates"}
               </span>
@@ -147,18 +147,18 @@ export function SearchBar({ variant = "hero", className }: SearchBarProps) {
           </PopoverContent>
         </Popover>
 
-        <div className="h-8 w-px bg-border" />
+        <div className="hidden sm:block h-8 w-px bg-border" />
 
         {/* Guests */}
         <Popover open={activeTab === "guests"} onOpenChange={(open) => setActiveTab(open ? "guests" : null)}>
           <PopoverTrigger asChild>
             <button
               className={cn(
-                "flex flex-col rounded-full px-6 py-3 text-left transition-colors hover:bg-secondary",
+                "flex flex-col rounded-xl sm:rounded-full px-4 py-3 text-left transition-colors hover:bg-secondary w-full sm:w-auto",
                 activeTab === "guests" && "bg-secondary"
               )}
             >
-              <span className="text-xs font-semibold">Who</span>
+              <span className="text-xs font-semibold uppercase">Who</span>
               <span className={cn("text-sm", guests > 1 ? "text-foreground" : "text-muted-foreground")}>
                 {guests > 1 ? `${guests} guests` : "Add guests"}
               </span>
@@ -199,13 +199,13 @@ export function SearchBar({ variant = "hero", className }: SearchBarProps) {
           variant="search"
           size={isHero ? "lg" : "default"}
           className={cn(
-            "shrink-0",
-            isHero ? "h-12 gap-2 px-6" : "h-10 px-4"
+            "shrink-0 w-full sm:w-auto mt-2 sm:mt-0",
+            isHero ? "sm:h-12 gap-2 px-6" : "sm:h-10 px-4"
           )}
           onClick={handleSearch}
         >
           <Search className={cn(isHero ? "h-5 w-5" : "h-4 w-4")} />
-          {isHero && <span className="font-semibold">Search</span>}
+          <span className="font-semibold">Search</span>
         </Button>
       </div>
     </div>
