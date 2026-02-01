@@ -1,457 +1,176 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Progress } from "@/components/ui/progress";
-import { Upload, X, ChevronRight, ChevronLeft } from "lucide-react";
-import { toast } from "sonner";
-import { amenitiesList } from "@/data/mockListings";
-
-const STEPS = [
-  { id: 1, title: "Property Details", description: "Tell us about your place" },
-  { id: 2, title: "Location", description: "Where is it located?" },
-  { id: 3, title: "Amenities", description: "What does it offer?" },
-  { id: 4, title: "Photos", description: "Show off your space" },
-  { id: 5, title: "Pricing", description: "Set your price" },
-];
+import { Card } from "@/components/ui/card";
+import { ChevronLeft, Camera, MapPin, Home, CheckCircle2 } from "lucide-react";
 
 const CreateListing = () => {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    // Step 1: Property Details
-    title: "",
-    description: "",
-    propertyType: "",
-    maxGuests: 1,
-    bedrooms: 1,
-    beds: 1,
-    bathrooms: 1,
-    
-    // Step 2: Location
-    city: "Lagos",
-    location: "",
-    address: "",
-    
-    // Step 3: Amenities
-    amenities: [] as string[],
-    
-    // Step 4: Photos
-    images: [] as string[],
-    
-    // Step 5: Pricing
-    pricePerNight: "",
-  });
+  const [step, setStep] = useState(1);
+  const totalSteps = 3;
 
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-
-  const progress = (currentStep / STEPS.length) * 100;
-
-  const handleNext = () => {
-    if (currentStep < STEPS.length) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const handleSubmit = () => {
-    toast.success("Listing created successfully!");
-    setTimeout(() => {
-      navigate("/host/dashboard");
-    }, 1500);
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    setUploadedFiles([...uploadedFiles, ...files]);
-    
-    // Create preview URLs
-    const newImages = files.map((file) => URL.createObjectURL(file));
-    setFormData({ ...formData, images: [...formData.images, ...newImages] });
-  };
-
-  const removeImage = (index: number) => {
-    const newImages = formData.images.filter((_, i) => i !== index);
-    const newFiles = uploadedFiles.filter((_, i) => i !== index);
-    setFormData({ ...formData, images: newImages });
-    setUploadedFiles(newFiles);
-  };
-
-  const toggleAmenity = (amenity: string) => {
-    const newAmenities = formData.amenities.includes(amenity)
-      ? formData.amenities.filter((a) => a !== amenity)
-      : [...formData.amenities, amenity];
-    setFormData({ ...formData, amenities: newAmenities });
-  };
+  const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps));
+  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="py-8">
-        <div className="container max-w-4xl">
-          {/* Progress Header */}
-          <div className="mb-8">
-            <div className="mb-4 flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold">Create a Listing</h1>
-                <p className="text-muted-foreground">
-                  Step {currentStep} of {STEPS.length}: {STEPS[currentStep - 1].title}
-                </p>
-              </div>
-              <Button variant="ghost" onClick={() => navigate("/host/dashboard")}>
-                Save & Exit
-              </Button>
-            </div>
-            <Progress value={progress} className="h-2" />
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      {/* STEPS HEADER */}
+      <header className="bg-white border-b sticky top-0 z-50 px-4 py-4">
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-full">
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+          <div className="flex gap-2">
+            {[1, 2, 3].map((s) => (
+              <div 
+                key={s} 
+                className={`h-2 w-8 rounded-full transition-all duration-500 ${
+                  step >= s ? "bg-slate-900" : "bg-slate-200"
+                }`} 
+              />
+            ))}
           </div>
+          <span className="text-[10px] font-black uppercase text-slate-400">Step {step} of 3</span>
+        </div>
+      </header>
 
-          {/* Step Content */}
-          <Card>
-            <CardHeader>
-              <CardTitle>{STEPS[currentStep - 1].title}</CardTitle>
-              <CardDescription>{STEPS[currentStep - 1].description}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Step 1: Property Details */}
-              {currentStep === 1 && (
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="title">Listing Title *</Label>
-                    <Input
-                      id="title"
-                      placeholder="e.g., Cozy Studio in Lekki"
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      required
-                    />
-                  </div>
+      <main className="flex-1 py-8 px-4">
+        <div className="max-w-2xl mx-auto">
+          
+          {/* STEP 1: BASICS */}
+          {step === 1 && (
+            <div className="space-y-8 animate-in slide-in-from-right-4 duration-500">
+              <div>
+                <h1 className="text-3xl font-black text-slate-900 tracking-tighter">The Basics</h1>
+                <p className="text-slate-500 font-medium">Tell us where your place is and how much you charge.</p>
+              </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description *</Label>
-                    <Textarea
-                      id="description"
-                      placeholder="Describe your place, what makes it special, nearby attractions..."
-                      rows={6}
-                      value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      required
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      {formData.description.length}/500 characters
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="propertyType">Property Type *</Label>
-                    <Select
-                      value={formData.propertyType}
-                      onValueChange={(value) => setFormData({ ...formData, propertyType: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select property type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="apartment">Apartment</SelectItem>
-                        <SelectItem value="house">House</SelectItem>
-                        <SelectItem value="villa">Villa</SelectItem>
-                        <SelectItem value="studio">Studio</SelectItem>
-                        <SelectItem value="penthouse">Penthouse</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="maxGuests">Max Guests</Label>
-                      <Input
-                        id="maxGuests"
-                        type="number"
-                        min="1"
-                        value={formData.maxGuests}
-                        onChange={(e) =>
-                          setFormData({ ...formData, maxGuests: parseInt(e.target.value) || 1 })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="bedrooms">Bedrooms</Label>
-                      <Input
-                        id="bedrooms"
-                        type="number"
-                        min="0"
-                        value={formData.bedrooms}
-                        onChange={(e) =>
-                          setFormData({ ...formData, bedrooms: parseInt(e.target.value) || 0 })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="beds">Beds</Label>
-                      <Input
-                        id="beds"
-                        type="number"
-                        min="1"
-                        value={formData.beds}
-                        onChange={(e) =>
-                          setFormData({ ...formData, beds: parseInt(e.target.value) || 1 })
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="bathrooms">Bathrooms</Label>
-                      <Input
-                        id="bathrooms"
-                        type="number"
-                        min="1"
-                        step="0.5"
-                        value={formData.bathrooms}
-                        onChange={(e) =>
-                          setFormData({ ...formData, bathrooms: parseFloat(e.target.value) || 1 })
-                        }
-                      />
-                    </div>
-                  </div>
+              <Card className="border-none shadow-soft rounded-[2.5rem] p-8 space-y-6">
+                <FormInput label="Listing Title" placeholder="e.g. Modern Waterfront Penthouse" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormInput label="Price per Night (₦)" placeholder="85,000" type="number" />
+                  <FormSelect label="Location" options={["Ikoyi", "Victoria Island", "Lekki Phase 1", "Ikeja"]} />
                 </div>
-              )}
+                <FormInput label="Street Address" placeholder="e.g. 12B Adetokunbo Ademola St" icon={<MapPin className="h-4 w-4" />} />
+              </Card>
+            </div>
+          )}
 
-              {/* Step 2: Location */}
-              {currentStep === 2 && (
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="city">City *</Label>
-                    <Select
-                      value={formData.city}
-                      onValueChange={(value) => setFormData({ ...formData, city: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Lagos">Lagos</SelectItem>
-                        <SelectItem value="Abuja">Abuja</SelectItem>
-                        <SelectItem value="Port Harcourt">Port Harcourt</SelectItem>
-                        <SelectItem value="Ibadan">Ibadan</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+          {/* STEP 2: DETAILS */}
+          {step === 2 && (
+            <div className="space-y-8 animate-in slide-in-from-right-4 duration-500">
+              <div>
+                <h1 className="text-3xl font-black text-slate-900 tracking-tighter">Space Details</h1>
+                <p className="text-slate-500 font-medium">Help guests understand what they're booking.</p>
+              </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="location">Neighborhood/Area *</Label>
-                    <Input
-                      id="location"
-                      placeholder="e.g., Lekki Phase 1, Ikoyi, Victoria Island"
-                      value={formData.location}
-                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Full Address *</Label>
-                    <Textarea
-                      id="address"
-                      placeholder="Street address, building name, etc."
-                      rows={3}
-                      value={formData.address}
-                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                      required
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      Your exact address will only be shared with confirmed guests
-                    </p>
-                  </div>
+              <Card className="border-none shadow-soft rounded-[2.5rem] p-8 space-y-8">
+                <div className="grid grid-cols-2 gap-6">
+                  <Counter label="Bedrooms" />
+                  <Counter label="Bathrooms" />
                 </div>
-              )}
-
-              {/* Step 3: Amenities */}
-              {currentStep === 3 && (
                 <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    Select all amenities that apply to your property
-                  </p>
-                  <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                    {amenitiesList.map((amenity) => (
-                      <label
-                        key={amenity}
-                        className="flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors hover:bg-secondary"
-                      >
-                        <Checkbox
-                          checked={formData.amenities.includes(amenity)}
-                          onCheckedChange={() => toggleAmenity(amenity)}
-                        />
-                        <span className="text-sm">{amenity}</span>
-                      </label>
+                  <label className="text-[10px] font-black uppercase text-slate-400 ml-1">Key Amenities</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {["24/7 Power", "Fast WiFi", "Gym", "Pool", "Security", "Chef"].map((amenity) => (
+                      <button key={amenity} className="flex items-center gap-2 p-4 rounded-2xl border-2 border-slate-50 hover:border-slate-900 transition-all font-bold text-sm text-slate-700">
+                        <CheckCircle2 className="h-4 w-4 text-slate-200" /> {amenity}
+                      </button>
                     ))}
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Selected: {formData.amenities.length} amenities
-                  </p>
                 </div>
-              )}
+              </Card>
+            </div>
+          )}
 
-              {/* Step 4: Photos */}
-              {currentStep === 4 && (
-                <div className="space-y-4">
-                  <div>
-                    <Label>Property Photos *</Label>
-                    <p className="mb-4 text-sm text-muted-foreground">
-                      Upload at least 5 high-quality photos. The first photo will be the cover image.
-                    </p>
+          {/* STEP 3: MEDIA */}
+          {step === 3 && (
+            <div className="space-y-8 animate-in slide-in-from-right-4 duration-500">
+              <div>
+                <h1 className="text-3xl font-black text-slate-900 tracking-tighter">Add Photos</h1>
+                <p className="text-slate-500 font-medium">Show off your space! Upload at least 5 high-quality photos.</p>
+              </div>
 
-                    {/* Upload Area */}
-                    <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 transition-colors hover:bg-secondary">
-                      <Upload className="mb-2 h-12 w-12 text-muted-foreground" />
-                      <p className="mb-1 font-medium">Click to upload photos</p>
-                      <p className="text-sm text-muted-foreground">
-                        JPG, PNG or WebP (Max 5MB each)
-                      </p>
-                      <input
-                        type="file"
-                        multiple
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleFileUpload}
-                      />
-                    </label>
+              <div className="grid grid-cols-1 gap-4">
+                <div className="border-4 border-dashed border-slate-200 rounded-[2.5rem] p-12 flex flex-col items-center justify-center text-center bg-white hover:bg-slate-50 transition-colors cursor-pointer group">
+                  <div className="h-16 w-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Camera className="h-8 w-8 text-slate-400" />
                   </div>
-
-                  {/* Preview Grid */}
-                  {formData.images.length > 0 && (
-                    <div>
-                      <p className="mb-3 text-sm font-medium">
-                        Uploaded Photos ({formData.images.length})
-                      </p>
-                      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                        {formData.images.map((image, index) => (
-                          <div key={index} className="group relative aspect-square overflow-hidden rounded-lg">
-                            <img
-                              src={image}
-                              alt={`Upload ${index + 1}`}
-                              className="h-full w-full object-cover"
-                            />
-                            {index === 0 && (
-                              <div className="absolute left-2 top-2 rounded bg-primary px-2 py-1 text-xs font-semibold text-primary-foreground">
-                                Cover
-                              </div>
-                            )}
-                            <button
-                              onClick={() => removeImage(index)}
-                              className="absolute right-2 top-2 rounded-full bg-destructive p-1.5 text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100"
-                            >
-                              <X className="h-4 w-4" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  <p className="font-black text-slate-900">Tap to upload</p>
+                  <p className="text-xs text-slate-400 font-bold uppercase mt-1">PNG, JPG up to 10MB</p>
                 </div>
-              )}
-
-              {/* Step 5: Pricing */}
-              {currentStep === 5 && (
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="pricePerNight">Price Per Night (₦) *</Label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                        ₦
-                      </span>
-                      <Input
-                        id="pricePerNight"
-                        type="number"
-                        min="1000"
-                        step="1000"
-                        placeholder="25000"
-                        className="pl-8"
-                        value={formData.pricePerNight}
-                        onChange={(e) => setFormData({ ...formData, pricePerNight: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      Set a competitive price based on your property's features and location
-                    </p>
-                  </div>
-
-                  {formData.pricePerNight && (
-                    <Card className="bg-secondary">
-                      <CardHeader>
-                        <CardTitle className="text-base">Earnings Breakdown</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-2 text-sm">
-                        <div className="flex justify-between">
-                          <span>Guest pays per night</span>
-                          <span className="font-semibold">
-                            ₦{parseInt(formData.pricePerNight).toLocaleString()}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Service fee (12%)</span>
-                          <span className="text-destructive">
-                            -₦{Math.round(parseInt(formData.pricePerNight) * 0.12).toLocaleString()}
-                          </span>
-                        </div>
-                        <div className="flex justify-between border-t pt-2 font-semibold">
-                          <span>You earn</span>
-                          <span className="text-primary">
-                            ₦
-                            {Math.round(parseInt(formData.pricePerNight) * 0.88).toLocaleString()}
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-
-                  <div className="rounded-lg border bg-muted/50 p-4">
-                    <h4 className="mb-2 font-semibold">Pricing Tips</h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
-                      <li>• Similar listings in your area charge ₦20,000 - ₦50,000/night</li>
-                      <li>• You can adjust your price anytime</li>
-                      <li>• Consider offering weekly/monthly discounts later</li>
-                    </ul>
-                  </div>
+                
+                <div className="grid grid-cols-3 gap-3">
+                   {[1,2,3].map(i => (
+                     <div key={i} className="aspect-square rounded-2xl bg-slate-200 border-2 border-white shadow-sm" />
+                   ))}
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              </div>
+            </div>
+          )}
 
-          {/* Navigation Buttons */}
-          <div className="mt-6 flex items-center justify-between">
-            <Button
-              variant="outline"
-              onClick={handlePrevious}
-              disabled={currentStep === 1}
-            >
-              <ChevronLeft className="mr-2 h-4 w-4" />
-              Previous
-            </Button>
-            {currentStep < STEPS.length ? (
-              <Button onClick={handleNext}>
-                Next
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            ) : (
-              <Button onClick={handleSubmit} className="gap-2">
-                Publish Listing
-              </Button>
-            )}
-          </div>
         </div>
       </main>
-      <Footer />
+
+      {/* FIXED BOTTOM NAVIGATION */}
+      <footer className="bg-white border-t p-6 pb-10">
+        <div className="max-w-2xl mx-auto flex justify-between gap-4">
+          <Button 
+            variant="ghost" 
+            onClick={prevStep} 
+            disabled={step === 1}
+            className="rounded-2xl h-14 px-8 font-black uppercase text-xs"
+          >
+            Back
+          </Button>
+          
+          <Button 
+            onClick={step === totalSteps ? () => navigate("/host/dashboard") : nextStep}
+            className="flex-1 rounded-2xl h-14 bg-slate-900 text-white font-black shadow-xl"
+          >
+            {step === totalSteps ? "Launch Listing" : "Continue"}
+          </Button>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+// --- HELPERS ---
+
+const FormInput = ({ label, placeholder, type = "text", icon }: any) => (
+  <div className="space-y-2">
+    <label className="text-[10px] font-black uppercase text-slate-400 ml-1">{label}</label>
+    <div className="relative">
+      {icon && <div className="absolute left-5 top-1/2 -translate-y-1/2">{icon}</div>}
+      <input 
+        type={type} 
+        placeholder={placeholder}
+        className={`w-full h-14 bg-slate-50 border-none rounded-2xl ${icon ? 'pl-12' : 'px-6'} font-bold text-slate-900 focus:ring-2 focus:ring-slate-200 transition-all`} 
+      />
+    </div>
+  </div>
+);
+
+const FormSelect = ({ label, options }: any) => (
+  <div className="space-y-2">
+    <label className="text-[10px] font-black uppercase text-slate-400 ml-1">{label}</label>
+    <select className="w-full h-14 bg-slate-50 border-none rounded-2xl px-6 font-bold text-slate-900 focus:ring-2 focus:ring-slate-200 transition-all appearance-none">
+      {options.map((opt: string) => <option key={opt}>{opt}</option>)}
+    </select>
+  </div>
+);
+
+const Counter = ({ label }: { label: string }) => {
+  const [count, setCount] = useState(1);
+  return (
+    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+      <span className="text-sm font-black text-slate-900">{label}</span>
+      <div className="flex items-center gap-4">
+        <button onClick={() => setCount(Math.max(0, count - 1))} className="h-8 w-8 rounded-full bg-white shadow-sm flex items-center justify-center font-black">-</button>
+        <span className="font-black text-slate-900 w-4 text-center">{count}</span>
+        <button onClick={() => setCount(count + 1)} className="h-8 w-8 rounded-full bg-slate-900 text-white shadow-sm flex items-center justify-center font-black">+</button>
+      </div>
     </div>
   );
 };

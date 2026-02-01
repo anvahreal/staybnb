@@ -22,8 +22,8 @@ const Index = () => {
       <main>
         <Hero />
 
-        {/* New: Trust Bar - Essential for User UI */}
-        <section className="bg-white border-y border-slate-100 py-6">
+         {/* New: Trust Bar - Essential for User UI */}
+        {/*<section className="bg-white border-y border-slate-100 py-6">
           <div className="container px-4 flex flex-wrap justify-between gap-6 md:gap-0">
             {[
               { icon: ShieldCheck, text: "Verified Listings", sub: "Hand-picked for quality" },
@@ -41,10 +41,10 @@ const Index = () => {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* Neighborhood Explorer */}
-        <section className="py-16">
+        <section className="py-6">
           <div className="container px-4">
             <h2 className="text-2xl font-black text-slate-900 md:text-3xl tracking-tight mb-8">
               Explore Lagos neighborhoods

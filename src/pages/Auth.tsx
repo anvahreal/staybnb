@@ -68,9 +68,9 @@ const Auth = () => {
           <div className="mb-8 text-center">
             <Link to="/" className="inline-flex items-center gap-2">
               <img
-                src="/assets/digital-ridr-logo.png"
+                src="/assets/digitalridr-logo.PNG"
                 alt="Digital Ridr - Travels & Apartments"
-                className="h-16 md:h-20 w-auto"
+                className="h-10 md:h-15 w-auto"
               />
             </Link>
           </div>

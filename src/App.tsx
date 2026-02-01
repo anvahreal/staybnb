@@ -14,7 +14,7 @@ import HostDashboard from "./pages/HostDashboard";
 import CreateListing from "./pages/CreateListing";
 import Checkout from "./pages/Checkout";
 import MessagingCenter from "./pages/MessagingCenter";
-import HostWallet from "./pages/HostWallet";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +24,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+      <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/search" element={<Search />} />
@@ -32,7 +33,6 @@ const App = () => (
           <Route path="/host/create-listing" element={<CreateListing />} />
           <Route path="/host/dashboard" element={<HostDashboard />} />
           <Route path="/host/messages" element={<MessagingCenter />} />
-          <Route path="/host/wallet" element={<HostWallet />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/host" element={<Host />} />
           <Route path="/checkout" element={<Checkout />} />
